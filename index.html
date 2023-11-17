@@ -49,7 +49,37 @@
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
   <!-- jQuery -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js">
+
+      var getGeoUrl = "https://api.api-ninjas.com/v1/geocoding?city="
+      var city = "london";
+      var getGeokey = "KAFlzm6ashs3y1s7WyiHtg==s6XLDFLv1ZbzWwF0";
+      var queryUrl =getGeoUrl+city+getGeokey;
+      console.log(queryUrl);
+
+      // Here we run our Fetch call to the OpenWeatherMap API
+fetch(queryURL)
+  .then(function (response) {
+    // Calling .json() to access the json data stored inside the returned promise
+    return response.json();
+  })
+  // We store all of the retrieved data inside of an object called "data"
+  .then(function (data) {
+
+    // Log the queryURL
+    console.log(queryURL);
+
+    // Log the resulting object
+    console.log(data);
+
+  });
+
+/*
+      var baseUrl = "https://api.openweathermap.org/data/2.5/forecast?";
+      var latitude = "lat=" + ;//latitude from other site
+      var longitude = "&lon=" + ;//logitude from other website
+      var key = "&appid=" + "1c7e61a3aacff2b6b77f23236641adae";  */
+  </script>
 </body>
 
 </html>
