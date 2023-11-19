@@ -1,3 +1,14 @@
+//add eventlistener on search button
+$("#search-form").on("click", "#search-button",function(event){
+event.preventDefault();
+//getting data from input field
+var inputCity = $("#search-input").val();
+console.log(inputCity);
+//clearing the input field
+$("#search-input").val("");
+});
+
+
 //create url for getting the coordinates of a city
 var geoUrl = "https://api.opencagedata.com/geocode/v1/json?";
       var city = "q=" + encodeURIComponent("london");
