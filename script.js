@@ -89,7 +89,7 @@ function displayForecast(weatherdata){
 var cityDiv = $("<div/>");
 cityDiv.text(weatherdata.city.name + " " + today);
   //create a img element to display icon
-icon = $("<img/>");
+var icon = $("<img/>");
 icon.attr("src", "http://openweathermap.org/img/wn/" + weatherdata.list[0].weather[0].icon + ".png");
   //create a div to display temperature
 var tempDiv = $("<div/>");
@@ -103,17 +103,20 @@ var humDiv = $("<div/>");
 humDiv.text("Humidity: "+ weatherdata.list[0].main.humidity + "%");
 todayEl.append(cityDiv, icon, tempDiv, windDiv, humDiv);
 
+//use variable to store the j when the if condition is true first time
+var storej = 0;
 //use for to inspect the weather forcast looking for daily change in object.list[j].dt_txt
-for (j=0; j<weatherdata.list.length; j++){
-  var nextDay = dayjs().add(1,'day').format("YYYY-MM-DD");
-  console.log("Next day:", nextDay);
-
+for (var j=0; j<weatherdata.list.length; j++){
+  //var nextDay = dayjs().add(1,'day').format("YYYY-MM-DD");
+  //console.log("Next day:", nextDay);
+  
   if (weatherdata.list[j].dt_txt.includes(dayjs().add(1,'day').format("YYYY-MM-DD"))) {
+    storej = j;
     var date1 = $("<div/>");
     date1.text(dayjs().add(1,'day').format("DD/MM/YYYY"));
     var icon1 = $("<img/>");
     icon1.attr("src", "http://openweathermap.org/img/wn/" + weatherdata.list[j].weather[0].icon + ".png");
-    icon1.css("width", "10px");
+    icon1.attr("style", "height: 50px;", "width: 50px");
     var temp1Div = $("<div/>");
     var temp1C = weatherdata.list[j].main.temp-273.15;
     temp1Div.text("Temp: " + temp1C.toFixed(2) + "Celsius");
@@ -122,11 +125,28 @@ for (j=0; j<weatherdata.list.length; j++){
     var hum1Div = $("<div/>");
     hum1Div.text("Humidity: "+ weatherdata.list[j].main.humidity + "%");
     forecastEl.append(date1, icon1, temp1Div, wind1Div, hum1Div);
-    return j;
-  }
-   
+    break;
+  }  
 }
 
+var daysNr = 2;
+//get data +8index to reach the next day
+for (var k =storej+8; k<weatherdata.list.length; k+=8){
+  var date2 = $("<div/>");
+  date2.text(dayjs().add(daysNr,'day').format("DD/MM/YYYY"));
+  var icon2 = $("<img/>");
+  icon2.attr("src", "http://openweathermap.org/img/wn/" + weatherdata.list[k].weather[0].icon + ".png");
+  icon2.css("width", "10px");
+  var temp2Div = $("<div/>");
+  var temp2C = weatherdata.list[k].main.temp-273.15;
+  temp2Div.text("Temp: " + temp2C.toFixed(2) + "Celsius");
+  var wind2Div = $("<div/>");
+  wind2Div.text("Wind: "+ weatherdata.list[k].wind.speed + "KPH");
+  var hum2Div = $("<div/>");
+  hum2Div.text("Humidity: "+ weatherdata.list[k].main.humidity + "%");
+  forecastEl.append(date2, icon2, temp2Div, wind2Div, hum2Div);
+  daysNr += 1;
+}
 
 //store city in a variable
 var stored = weatherdata.city.name;
