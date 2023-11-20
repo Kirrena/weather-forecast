@@ -2,7 +2,7 @@
 $(document).ready(function() {
 
   createbuttonforexistinglocalstoragecities();
-  //create clear button
+  
 
 });
 
@@ -102,14 +102,37 @@ windDiv.text("Wind: "+ weatherdata.list[0].wind.speed + "KPH");
 var humDiv = $("<div/>");
 humDiv.text("Humidity: "+ weatherdata.list[0].main.humidity + "%");
 todayEl.append(cityDiv, icon, tempDiv, windDiv, humDiv);
+
+//use for to inspect the weather forcast looking for daily change in object.list[j].dt_txt
+for (j=0; j<weatherdata.list.length; j++){
+  var nextDay = dayjs().add(1,'day').format("YYYY-MM-DD");
+  console.log("Next day:", nextDay);
+
+  if (weatherdata.list[j].dt_txt.includes(dayjs().add(1,'day').format("YYYY-MM-DD"))) {
+    var date1 = $("<div/>");
+    date1.text(dayjs().add(1,'day').format("DD/MM/YYYY"));
+    var icon1 = $("<img/>");
+    icon1.attr("src", "http://openweathermap.org/img/wn/" + weatherdata.list[j].weather[0].icon + ".png");
+    icon1.css("width", "10px");
+    var temp1Div = $("<div/>");
+    var temp1C = weatherdata.list[j].main.temp-273.15;
+    temp1Div.text("Temp: " + temp1C.toFixed(2) + "Celsius");
+    var wind1Div = $("<div/>");
+    wind1Div.text("Wind: "+ weatherdata.list[j].wind.speed + "KPH");
+    var hum1Div = $("<div/>");
+    hum1Div.text("Humidity: "+ weatherdata.list[j].main.humidity + "%");
+    forecastEl.append(date1, icon1, temp1Div, wind1Div, hum1Div);
+    return j;
+  }
+   
+}
+
+
 //store city in a variable
 var stored = weatherdata.city.name;
-//check if the city is in the localStorage array
-//if (!JSON.parse(localStorage.getItem("cities")).includes(stored)){
+
   //store city in a variable
 addtohistory(stored);
-
-//}
 }
 
 //function to creating history buttons
@@ -132,19 +155,22 @@ function addtohistory(data){
   
     historyEl.append(historyButton);
   }
-    console.log(existingCities);
+    //console.log(existingCities);
   }
     
   
 
 // clicking on history button
 $("#history").on("click", ".history-btn", function(){
+  //clear todayEl
+  todayEl.empty();
   var clickedCity = $(this).text();
 
   // Calling getcoordinates function
   getcoordinates(clickedCity);
     });
 
+    //function to retrieve data from localStorage for creating buttons in history field
 function createbuttonforexistinglocalstoragecities(){
     if(JSON.parse(localStorage.getItem("cities"))){
       for (var i =0 ; i<(JSON.parse(localStorage.getItem("cities"))).length ; i++){
@@ -156,13 +182,18 @@ function createbuttonforexistinglocalstoragecities(){
   }
 }   
 
+//creating clear button to clear history
 var clearButton = $("<button/>");
 clearButton.text("Delete history");
 clearButton.attr("class", "clear btn btn-primary btn-search");
 $("#history").append(clearButton);
 
+//eventlistener on clear button
 $("#history").on("click", ".clear", function(){
+  //clear all display area
   historyEl.empty();
+  todayEl.empty();
+  forecastEl.empty();
   // Remove the "cities" key from localStorage
   localStorage.removeItem("cities");
 });
