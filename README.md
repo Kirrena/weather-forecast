@@ -38,6 +38,7 @@ URL:
 https://kirrena.github.io/weather-forecast/
 
 ## Screenshot
+![weather-forecast](https://github.com/Kirrena/daily-planner/assets/74355186/a58ee9f6-fee0-466c-9f1c-fed34459861e)
 
 ## License
 MIT license
