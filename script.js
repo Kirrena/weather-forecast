@@ -25,8 +25,9 @@ var inputCity = $("#search-input").val();
 getcoordinates(inputCity);
 //clearing the input field
 $("#search-input").val("");
-//clear today display area
+//clear today and forecast display area
 todayEl.empty();
+forecastEl.empty();
 });
 
 
@@ -82,7 +83,8 @@ function displayForecast(weatherdata){
  console.log(weatherdata);
   //create a div to display the city
 var cityDiv = $("<div/>");
-cityDiv.text(weatherdata.city.name + " " + today);
+cityDiv.text(weatherdata.city.name + " (" + today + ")");
+cityDiv.addClass("displayheader");
   //create a img element to display icon
 var icon = $("<img/>");
 icon.attr("src", "http://openweathermap.org/img/wn/" + weatherdata.list[0].weather[0].icon + ".png");
@@ -97,9 +99,12 @@ windDiv.text("Wind: "+ weatherdata.list[0].wind.speed + "KPH");
 var humDiv = $("<div/>");
 humDiv.text("Humidity: "+ weatherdata.list[0].main.humidity + "%");
 todayEl.append(cityDiv, icon, tempDiv, windDiv, humDiv);
+//add border to todayEl
+todayEl.css({'border': '1px solid black'});
 
 var header = $("<h5/>");
 header.text("5-Day Forecast:");
+
 //use variable to store the j when the if condition is true first time
 var storej = 0;
 //use for to inspect the weather forcast looking for daily change in object.list[j].dt_txt
@@ -110,7 +115,7 @@ for (var j=0; j<weatherdata.list.length; j++){
   if (weatherdata.list[j].dt_txt.includes(dayjs().add(1,'day').format("YYYY-MM-DD"))) {
     storej = j;
     var card = $("<div/>");
-    card.attr("class","card mt-5");
+    card.attr("class","card cardstyle");
     card.attr("style", "width: 13rem;");
     var date1 = $("<div/>");
     date1.text(dayjs().add(1,'day').format("DD/MM/YYYY"));
@@ -135,7 +140,7 @@ var daysNr = 2;
 for (var k =storej+8; k<weatherdata.list.length; k+=8){
   //use bootstrap class to make cards
   var card2 = $("<div/>");
-  card2.attr("class","card mt-5");
+  card2.attr("class","card cardstyle");
   card2.attr("style", "width: 13rem;");
   var date2 = $("<div/>");
   date2.text(dayjs().add(daysNr,'day').format("DD/MM/YYYY"));
@@ -163,6 +168,7 @@ addtohistory(stored);
 //function to creating history buttons
 function addtohistory(data){
   var existingCities = JSON.parse(localStorage.getItem("cities")) || [];
+  //check if its already in the localStorage array
   if (!existingCities.includes(data)) {
   // Add the new city to the array 
     existingCities.push(data);
@@ -174,10 +180,7 @@ function addtohistory(data){
   
   var historyButton = $("<button/>");
   historyButton.attr("class", "history-btn");
-  historyButton.text(data);
-  //add to localStorage
-  // Retrieve the existing cities from localStorage
-  
+  historyButton.text(data);  
     historyEl.append(historyButton);
   }
     //console.log(existingCities);

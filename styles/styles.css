@@ -1,0 +1,52 @@
+/*add style to cards=forecast*/
+.cardstyle {
+    background-color: rgb(20, 20, 80);
+    color: white;
+    border: 3px solid white;
+    margin-top: 5px;    
+}
+
+/*add style to today header*/
+.displayheader {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/*add style to history buttons*/
+.history-btn {
+    background-color: #ccc;
+    border-radius: 5px;
+    border: none;
+    margin-top: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.history-btn:hover {
+    background-color: #999; /* Change background color on hover */
+}
+
+/*add style to input field and serch button*/
+input, #search-button{
+    width: 100%;
+    border-radius: 5px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+}
+
+/*add full width to search button using the container as a flexbox*/
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+/*add linear-gradient to header*/
+.weather-header {
+    background-image: linear-gradient(90deg, rgb(47, 47, 230), rgb(24, 24, 101));
+}
+
